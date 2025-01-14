@@ -77,7 +77,7 @@ class BookControllerItTest extends Specification {
 
         then:
         result.andExpect(status().isBadRequest())
-                .andExpect(jsonPath('$.errorMessage').value("페이지 번호는 1이상이어야 합니다."))
+                .andExpect(jsonPath('$.errorMessage').value("페이지번호는 1이상이어야 합니다."))
     }
 
     def "size가 50을 초과하면 BadRequest 응답반환된다."() {
@@ -92,6 +92,6 @@ class BookControllerItTest extends Specification {
 
         then:
         result.andExpect(status().isBadRequest())
-                .andExpect(jsonPath('$.errorMessage').value("페이지 크기는 50이하여야 합니다."))
+                .andExpect(jsonPath('$.errorMessage').value("페이지크기는 50이하여야 합니다."))
     }
 }

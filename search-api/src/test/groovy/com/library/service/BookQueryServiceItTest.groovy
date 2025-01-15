@@ -18,7 +18,7 @@ import spock.lang.Specification
 @SpringBootTest
 class BookQueryServiceItTest extends Specification {
     @Autowired
-    BookQueryService bookQueryService;
+    BookQueryService bookQueryService
 
     @Autowired
     CircuitBreakerRegistry circuitBreakerRegistry
@@ -64,15 +64,15 @@ class BookQueryServiceItTest extends Specification {
         circuitBreakerRegistry.circuitBreaker("naverSearch", config)
 
         and: "naver쪽은 항상 예외가 발생한다."
-        naverBookRepository.search(keyword, page, size) >> {throw new RuntimeException("error!")}
+        naverBookRepository.search(keyword, page, size) >> { throw new RuntimeException("error!") }
 
         when:
         def result = bookQueryService.search(keyword, page, size)
 
-        then:"kakao쪽으로 Fallback된다."
+        then: "kakao쪽으로 Fallback 된다."
         1 * kakaoBookRepository.search(keyword, page, size) >> kakaoResponse
 
-        and: "circuit이 오픈된다."
+        and: "circuit이 OPEN된다."
         def circuitBreaker = circuitBreakerRegistry.getAllCircuitBreakers().stream().findFirst().get()
         circuitBreaker.state == CircuitBreaker.State.OPEN
 
